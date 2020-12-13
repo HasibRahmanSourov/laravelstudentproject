@@ -1,0 +1,141 @@
+<==8Dec2020==>
+1: Installation Laravel 6
+composer create-project --prefer-dist laravel/laravel hams_school "6.*"
+
+2: Create Database: hams_school
+
+3: DB Configration in the .env File
+
+4: Move To Root Folder
+	1) index.php
+	2) htaccess
+
+5: Change the Path direction of Index.php
+	1) require __DIR__.'/vendor/autoload.php';
+	2) $app = require_once __DIR__.'/bootstrap/app.php';
+
+6: Command List:
+	1) php artisan serve
+	2) composer dump-autoload
+	3) php artisan config:cache
+	4) php artisan config:clear
+	5) php artisan view:clear
+
+<=====================================>
+7:Authentication:
+composer require laravel/ui "^1.0" --dev
+php artisan ui vue --auth
+
+8:update users_table
+ {
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('usertype')->nullable();
+            $table->string('name')->nullable();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('mobile')->nullable();
+            $table->string('address')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('image')->nullable();
+            $table->tinyInteger('status')->default(1);
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
+
+9:then go to app and click providers and open AppServiceProvider.phpSchema::defaultStringLength(191);
+ Schema::defaultStringLength(191);
+ use Illuminate\Support\Facades\Schema;
+
+10:login from create
+goto this link and chose a login form templet
+https://bootsnipp.com/tags/login?page=42
+then select HTML and past this login.blage.php and copy css and take style tag and past this
+
+11.LINK: https://colorlib.com/wp/free-admin-templates/
+LINK: https://github.com/colorlibhq/AdminLTE
+click 2nd link and click code copy url then open project folder and colon this
+
+12:then coustomise dashbord index
+
+================= Admin =================
+1.go to resources folder then click view then create a folder backend then click this folder and create another folder layouts then cerate files 
+
+2.go to public folder and creat backend folder thend past build,dist,docs and plugins
+
+3.link css, js and img.
+
+4.dainamic admin name
+ {{ Auth::user()->name }} 
+
+ 5.change right side Admin name to
+ {{ Auth::user()->name }} 
+ 
+ 6.then dainamic logout go to app.blade.php then copy 
+  <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+           class="dropdown-item dropdown-footer">{{ __('Logout') }}</a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+
+====================== user ==========================
+1.create a controller
+    php artisan make:controller Backend/UserController
+
+2.Make user Route in group
+    Route::prefix('users')->group(function(){
+Route::get('/view', 'Backend\UserController@view')->name('users.view'); //table
+Route::get('/add', 'Backend\UserController@add')->name('users.add'); //form
+Route::post('/store', 'Backend\UserController@store')->name('users.store'); //database
+Route::get('/edit/{id}', 'Backend\UserController@edit')->name('users.edit');
+Route::post('/update/{id}', 'Backend\UserController@update')->name('users.update');
+Route::get('/delete/{id}', 'Backend\UserController@delete')->name('users.delete');
+});
+
+3.click view folder and creat user folder and creat a file name view-user.blade.php
+and copt home.blade.php in backend/layouts folder and post this view-user file
+
+4.Edit usercontroller use App
+    user App\User 
+    then creat route
+       public function view(){
+        $data['alldata'] = User::all();
+        return view('backend.user.view-user',$data);
+    }
+
+5.go to AdminTE and clik table folder and clik data.html and copy datatable css and past this head.blade.php and copy js and script and past this footer.blade.php
+
+6.then click view-user.blade.php file and edit this Manage User
+and creat table in card-body
+        <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>SI-Number</th>
+                            <th>Role</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($alldata as $key => $user)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td>{{$user->usertype}}</td>
+                            <td>{{$user->name}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>
+                                <a class="btn btn-primary" title="Edit" href=""><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-danger" title="Delete" href=""><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                       
+                    </tbody>
+                </table>
+
+
+
+
